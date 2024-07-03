@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Teste</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+	<canvas id="myChart"></canvas>
+	<canvas id="pwmChart"></canvas>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+	<script>
+		// Obtenha o valor de inc_code da URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const incCode = urlParams.get('inc_code');
+
+		// Defina o limite
+		const limit = 100; // altere este valor conforme necessário
+
+		// Construa a URL para chamar get_data.php com os parâmetros inc_code e limit
+		const url = `get_data.php?inc_code=${incCode}&limit=${limit}`;
+
+		var labels = [];
+		var temperaturaData = []; // Inicialize temperaturaData como um array vazio
+		var umidadeData = []; // Inicialize umidadeData como um array vazio
+		var pwm_fanData = [];
+		var pwm_lampData = [];
+
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var context_pwm = document.getElementById('pwmChart').getContext('2d');
+		
+        var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Temperatura',
+                data: temperaturaData,
+                borderColor: 'rgba(255, 0, 0, 1)',
+                tension: 0.01,
+                yAxisID: 'y-axis-1',
+                pointRadius: 0
+            },
+            {
+                label: 'Umidade',
+                data: umidadeData,
+                borderColor: 'rgba(0, 0, 255, 1)',
+                tension: 0.01,
+                yAxisID: 'y-axis-2',
+                pointRadius: 0
+            }]
+        },
+        options: {
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
+            responsive: true,
+            scales: {
+                'y-axis-1': { // primeiro eixo y
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Temperatura (°C)'
+                    },
+                    min:0,
+                    max:60
+                },
+                'y-axis-2': { // segundo eixo y
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Umidade (%)'
+                    },
+                    // grid line settings
+                    grid: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+                    min:0,
+                    max:100
+                    },
+                }
+            }
+        });
+        
+        var chart2 = new Chart(context_pwm, {
+			type: 'line',
+			data: {
+				labels: labels,
+				datasets: [{
+					label: 'Uso lâmpada',
+					data: pwm_lampData,
+                    borderColor: 'rgba(255, 255, 0, 1)',
+					tension: 0.01,
+                    pointRadius: 0
+				},
+				{
+					label: 'Uso ventilador',
+					data: pwm_fanData,
+                    borderColor: 'rgba(0, 255, 0, 1)',
+					tension: 0.01,
+                    pointRadius: 0
+				}]
+			},
+			options: {
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                responsive: true,
+				scales: {
+					y: {
+						beginAtZero: true,
+                        title:{
+                            text: 'Uso (%)',
+                            display: true
+                        },
+                        min:0,
+                        max:100
+					}
+				}
+			}
+		});
+        
+		function fetchDataAndUpdateChart() {
+			fetch(url)
+				.then(response => response.json())
+				.then(data => {
+					data = data.reverse();
+					labels = data.map(entry => moment(entry.timestamp).format('HH:mm:ss'));
+					umidadeData = data.map(entry => entry.umidade);
+					temperaturaData = data.map(entry => entry.temperatura);
+                    pwm_fanData = data.map(entry => (entry.pwm_fan / 1024) * 100); // normalize to 0-100%
+                    pwm_lampData = data.map(entry => (entry.pwm_lamp / 1024) * 100); // normalize to 0-100%
+					chart.data.labels = labels;
+					chart.data.datasets[0].data = temperaturaData;
+					chart.data.datasets[1].data = umidadeData;
+                    chart2.data.labels = labels;
+                    chart2.data.datasets[1].data = pwm_fanData;
+                    chart2.data.datasets[0].data = pwm_lampData;
+					chart.update();
+                    chart2.update();
+				});
+		}
+
+		fetchDataAndUpdateChart();
+		setInterval(fetchDataAndUpdateChart, 2000);
+	</script>
+</body>
+
+</html>

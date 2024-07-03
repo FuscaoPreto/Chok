@@ -2,7 +2,7 @@
 
 function login($username, $password) {
     // Establish a database connection
-    $connection = mysqli_connect("localhost", "root", "1234", "esp_db");
+    $connection = mysqli_connect("localhost", "id22261045_fusca", "Rededi360@", "id22261045_banco");
 
     // Check if the connection was successful
     if (!$connection) {
@@ -23,7 +23,7 @@ function login($username, $password) {
         $inc_code = $row['inc_code'];
 
         // Redirect to dashboard.html with the inc_code as a query parameter
-        header("Location: dashboard.php?inc_code=$inc_code");
+        header("Location: dashboard.html?inc_code=$inc_code");
         exit();
     } else {
         // Login failed, redirect to index.html with an error message

@@ -8,7 +8,7 @@ Foram utilizado sensor AHT10 para coleta de dados de temperatura e umidade do ar
 Foram utilizadas duas lâmpadas de 12V 30W para controlar a temperatura no interior da incubadora e uma ventoinha 12V para realizar o controle da umidade.
 
 ### Lógica
-A lógica utilizada é um controladoe PID que foi calibrado manualmente por 2 semanas.
+A lógica utilizada é um controlador PID que foi calibrado manualmente por 2 semanas.
 
 ## Tela de Login
 A aplicação possui uma tela de login, implementada no arquivo login.php. Esta tela é responsável por autenticar o usuário e direcioná-lo para o painel de controle.

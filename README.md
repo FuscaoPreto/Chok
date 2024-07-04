@@ -1,15 +1,16 @@
 # Projeto de Monitoramento de Incubadora de Ovos
 Este projeto é uma aplicação full-stack desenvolvida para monitorar uma incubadora de ovos. Ele utiliza um ESP32 para coletar dados de telemetria, que são então enviados para um servidor e exibidos em um painel de controle na web.
 
-##Tela de Login
+## Tela de Login
 A aplicação possui uma tela de login, implementada no arquivo login.php. Esta tela é responsável por autenticar o usuário e direcioná-lo para o painel de controle.
 
-Imagem da tela de login
+![Login](https://raw.githubusercontent.com/FuscaoPreto/Chok/main/images/login.png)
 
 ## Tela de Telemetria
 A telemetria do ESP32 é exibida em um painel de controle, implementado nos arquivos dashboard.html e dashboard.php. Esta tela exibe gráficos de temperatura, umidade e outros dados relevantes coletados pelo ESP32.
 
-Imagem da tela de telemetria
+![Telemetry 1](https://raw.githubusercontent.com/FuscaoPreto/Chok/main/images/Tele1.png)
+![Telemetry 1](https://raw.githubusercontent.com/FuscaoPreto/Chok/main/images/Tele2.png)
 
 Os dados são obtidos do servidor por meio de uma chamada à API implementada no arquivo get_data.php, que consulta o banco de dados e retorna os dados em formato JSON.
 

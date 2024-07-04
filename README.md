@@ -1,6 +1,15 @@
 # Projeto de Monitoramento de Incubadora de Ovos
 Este projeto é uma aplicação full-stack desenvolvida para monitorar uma incubadora de ovos. Ele utiliza um ESP32 para coletar dados de telemetria, que são então enviados para um servidor e exibidos em um painel de controle na web.
 
+## Sensor
+Foram utilizado sensor AHT10 para coleta de dados de temperatura e umidade do ar.
+
+## Atuadores
+Foram utilizadas duas lâmpadas de 12V 30W para controlar a temperatura no interior da incubadora e uma ventoinha 12V para realizar o controle da umidade.
+
+### Lógica
+A lógica utilizada é um controladoe PID que foi calibrado manualmente por 2 semanas.
+
 ## Tela de Login
 A aplicação possui uma tela de login, implementada no arquivo login.php. Esta tela é responsável por autenticar o usuário e direcioná-lo para o painel de controle.
 
